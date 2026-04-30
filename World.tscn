@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://40ynxhfo2fry"]
 
 [ext_resource type="PackedScene" uid="uid://beuc3ogoekifd" path="res://Player.tscn" id="1_c6gwx"]
+[ext_resource type="PackedScene" uid="uid://b8ixwhpe2t3qm" path="res://Modifiers/DraftMenu.tscn" id="2_2dftf"]
+[ext_resource type="PackedScene" uid="uid://hj5g4tgrpirx" path="res://Modifiers/ChoiceCard.tscn" id="3_bcbcq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c6gwx"]
 size = Vector2(630, 41)
@@ -9,6 +11,7 @@ size = Vector2(630, 41)
 position = Vector2(331, 136)
 
 [node name="Player" parent="." unique_id=457606498 instance=ExtResource("1_c6gwx")]
+active_modifier = {}
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=957797171]
 position = Vector2(175, 252)
@@ -29,3 +32,9 @@ offset_right = 368.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1243714815]
+
+[node name="DraftMenu" parent="CanvasLayer" unique_id=43045198 instance=ExtResource("2_2dftf")]
+size_flags_horizontal = 4
+card_scene = ExtResource("3_bcbcq")
