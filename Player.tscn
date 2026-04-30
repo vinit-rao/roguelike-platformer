@@ -5,6 +5,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2dftf"]
 size = Vector2(40, 40)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xhfnw"]
+size = Vector2(59, 52)
+
 [node name="Player" type="CharacterBody2D" unique_id=457606498]
 script = ExtResource("1_xhfnw")
 
@@ -25,3 +28,13 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=532386282]
+position_smoothing_enabled = true
+
+[node name="AttackHitbox" type="Area2D" parent="." unique_id=238845911]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox" unique_id=1454274239]
+position = Vector2(30.5, -6)
+shape = SubResource("RectangleShape2D_xhfnw")
+disabled = true
