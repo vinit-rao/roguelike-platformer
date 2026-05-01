@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b8ixwhpe2t3qm" path="res://Modifiers/DraftMenu.tscn" id="2_2dftf"]
 [ext_resource type="PackedScene" uid="uid://hj5g4tgrpirx" path="res://Modifiers/ChoiceCard.tscn" id="3_bcbcq"]
 [ext_resource type="PackedScene" uid="uid://bkcejquex02qf" path="res://DummyEnemy.tscn" id="4_js7pq"]
+[ext_resource type="PackedScene" uid="uid://dvrbnw3u1v7ah" path="res://LevelExit.tscn" id="5_eu7l1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c6gwx"]
 size = Vector2(630, 41)
@@ -41,3 +42,6 @@ card_scene = ExtResource("3_bcbcq")
 
 [node name="DummyEnemy" parent="." unique_id=257961027 instance=ExtResource("4_js7pq")]
 position = Vector2(316, 207)
+
+[node name="LevelExit" parent="." unique_id=1149161619 instance=ExtResource("5_eu7l1")]
+position = Vector2(479, 180)
