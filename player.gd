@@ -123,11 +123,17 @@ func jump() -> void:
 	current_state = State.AIR
 
 func start_attack() -> void:
+	print("attack btn pressed")
 	current_state = State.ATTACK
-	print("M1 pressed")
-	
 	# enable hitbox and wait
 	attack_hitbox.disabled = false
+	await get_tree().physics_framed
+	
+	var hitbox_area = $AttackHitbox
+	for body in hitbox_area.get_overlapping_bodies():
+		if body.is_in_group("Enemy") and body.has_method("take_damage"):
+			body.take_damage(1) # 1 damage yessir
+	
 	await get_tree().create_timer(0.3).timeout
 	
 	# disable hitbox and reset
