@@ -6,9 +6,10 @@ extends CharacterBody2D
 @export var gravity: float = 980.0
 @export var jump_velocity: float = -400.0
 @onready var attack_hitbox: CollisionShape2D = $AttackHitbox/CollisionShape2D
-
-# level modifiers
 @export var active_modifier: Dictionary = {}
+
+var max_hearts: int = 3
+var current_hearts: int = 3
 
 # define states
 enum State {IDLE, RUN, AIR, ATTACK}
@@ -127,7 +128,7 @@ func start_attack() -> void:
 	current_state = State.ATTACK
 	# enable hitbox and wait
 	attack_hitbox.disabled = false
-	await get_tree().physics_framed
+	await get_tree().physics_frame
 	
 	var hitbox_area = $AttackHitbox
 	for body in hitbox_area.get_overlapping_bodies():
@@ -141,3 +142,14 @@ func start_attack() -> void:
 	
 	if current_state == State.ATTACK:
 		current_state = State.IDLE
+
+func take_damage(amount: int) -> void:
+	current_hearts -= amount
+	print("Hearts left: ", current_hearts)
+	modulate = Color(5,0,0,1)
+	await get_tree().create_timer(0.2).timeout
+	modulate = Color.WHITE
+	
+	if current_hearts <= 0:
+		print("You dead man...")
+		get_tree().reload_current_scene()

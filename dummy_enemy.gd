@@ -14,3 +14,8 @@ func take_damage(amount: int) -> void:
 	if health <= 0:
 		print("Dummy destroyed!")
 		queue_free()
+
+
+func _on_damage_zone_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Player") and body.has_method("take_damage"):
+		body.take_damage(1)
