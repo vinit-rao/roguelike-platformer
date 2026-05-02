@@ -16,7 +16,9 @@ var map_layers: Array = []
 
 func _ready() -> void:
 	generate_map_data()
+	generate_connections()
 	spawn_map_visually()
+	draw_lines()
 
 func generate_map_data() -> void:
 	map_layers.clear()
@@ -87,3 +89,44 @@ func spawn_map_visually() -> void:
 	if player and GameManager.current_map_node == null:
 		player.current_node = start_node
 		player.global_position = start_node.global_position
+		
+
+func generate_connections() -> void:
+	for row in range(map_height - 1):
+		var current_layer = map_layers[row]
+		var next_layer = map_layers[row + 1]
+		
+		for i in range(current_layer.size()):
+			var start_node = current_layer[i]
+			var target_idx = clampi(i, 0, next_layer.size() - 1)
+			start_node["next_connections"].append(next_layer[target_idx])
+			
+		for j in range(next_layer.size()):
+			var target_node = next_layer[j]
+			var has_incoming = false
+			
+			for start_node in current_layer:
+				if target_node in start_node["next_connections"]:
+					has_incoming = true
+					
+			if not has_incoming:
+				var closest_idx = clampi(j, 0, current_layer.size() - 1)
+				if target_node not in current_layer[closest_idx]["next_connections"]:
+					current_layer[closest_idx]["next_connections"].append(target_node)
+
+func draw_lines() -> void:
+	for row in map_layers:
+		for node_data in row:
+			var start_pos = node_data["physical_node"].global_position
+			
+			# draw line
+			for target_data in node_data["next_connections"]:
+				var end_pos = target_data["physical_node"].global_position
+				
+				var line = Line2D.new()
+				line.add_point(start_pos)
+				line.add_point(end_pos)
+				line.width = 4.0 # line thickness
+				line.default_color = Color.DIM_GRAY # line color
+				line.z_index = -1 # makes lines go behind dots
+				add_child(line)
