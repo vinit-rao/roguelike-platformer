@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://c84n7htg10mw2"]
+
+[ext_resource type="Script" uid="uid://cisv638opjlpd" path="res://map_player.gd" id="1_bpvl8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_savfe"]
+
+[node name="MapPlayer" type="CharacterBody2D" unique_id=24265437]
+script = ExtResource("1_bpvl8")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=860470543]
+custom_minimum_size = Vector2(20, 20)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=847721681]
+shape = SubResource("RectangleShape2D_savfe")

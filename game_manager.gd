@@ -1,5 +1,7 @@
 extends Node
 
+var current_map_node: Area2D = null
+
 var modifiers = [
 	{
 		"title": "Icy Ground",

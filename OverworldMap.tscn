@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://ccku38ffahkuu"]
+
+[ext_resource type="Script" uid="uid://i5t6jidbj68t" path="res://map_generator.gd" id="2_x1xd1"]
+
+[node name="OverworldMap" type="Node2D" unique_id=1363383173]
+
+[node name="MapGenerator" type="Node" parent="." unique_id=254016948]
+script = ExtResource("2_x1xd1")
