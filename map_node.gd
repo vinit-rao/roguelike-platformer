@@ -10,6 +10,9 @@ signal node_clicked(node: Area2D)
 var grid_row: int = 0
 var grid_col: int = 0
 
+var node_name: String = "Unknown"
+var node_details: String = "No info."
+
 func _ready() -> void:
 	match node_type:
 		NodeType.START: $ColorRect.color = Color.GREEN

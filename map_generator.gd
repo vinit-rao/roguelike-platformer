@@ -11,6 +11,7 @@ extends Node
 
 @export var map_node_scene: PackedScene
 
+
 # This will hold the raw data of our generated map
 var map_layers: Array = []
 
@@ -83,6 +84,18 @@ func spawn_map_visually() -> void:
 			new_node.node_type = node_data["type"]
 			new_node.grid_row = node_data["row"]
 			new_node.grid_col = node_data["col"]
+			
+			if new_node.node_type == 1: # level
+				new_node.node_name = "Combat Encounter"
+				var diff = ["Normal", "Hard", "Elite"].pick_random()
+				var gold = str(randi_range(15, 50))
+				new_node.node_details = "Difficulty: " + diff + "\nReward: " + gold + " Gold"
+			elif new_node.node_type == 2: # shop
+				new_node.node_name = "Merchant"
+				new_node.node_details = "Spend your gold for powerful modifiers!"
+			elif new_node.node_type == 3: # boss
+				new_node.node_name = "BOSS: The Gatekeeper"
+				new_node.node_details = "WARNING: Extreme Danger."
 			
 			# add to scene
 			add_child(new_node)

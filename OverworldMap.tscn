@@ -4,13 +4,76 @@
 [ext_resource type="PackedScene" uid="uid://c84n7htg10mw2" path="res://MapPlayer.tscn" id="2_iraoq"]
 [ext_resource type="Script" uid="uid://i5t6jidbj68t" path="res://map_generator.gd" id="2_x1xd1"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x1xd1"]
+bg_color = Color(0.75259864, 0.5591721, 0.3043123, 1)
+
 [node name="OverworldMap" type="Node2D" unique_id=1363383173]
 
 [node name="MapGenerator" type="Node" parent="." unique_id=254016948]
 script = ExtResource("2_x1xd1")
 map_node_scene = ExtResource("1_v8wkh")
 
-[node name="MapPlayer" parent="." unique_id=24265437 instance=ExtResource("2_iraoq")]
+[node name="MapPlayer" parent="." unique_id=24265437 node_paths=PackedStringArray("info_popup", "title_label", "details_label") instance=ExtResource("2_iraoq")]
+info_popup = NodePath("../UI/InfoPopup")
+title_label = NodePath("../UI/InfoPopup/VBoxContainer/TitleLabel")
+details_label = NodePath("../UI/InfoPopup/VBoxContainer/DetailsLabel")
 
 [node name="Camera2D" type="Camera2D" parent="MapPlayer" unique_id=197664286]
+offset = Vector2(-150, 0)
 position_smoothing_enabled = true
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1717631056]
+
+[node name="InfoPopup" type="Panel" parent="UI" unique_id=510176491]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 50.0
+offset_top = -274.0
+offset_right = 400.0
+offset_bottom = 276.0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/InfoPopup" unique_id=1125504023]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ImagePlaceholder" type="PanelContainer" parent="UI/InfoPopup/VBoxContainer" unique_id=1757219009]
+custom_minimum_size = Vector2(0, 250)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/InfoPopup/VBoxContainer/ImagePlaceholder" unique_id=274807892]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="UI/InfoPopup/VBoxContainer" unique_id=1423947382]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DetailsLabel" type="Label" parent="UI/InfoPopup/VBoxContainer" unique_id=1768228453]
+layout_mode = 2
+size_flags_vertical = 6
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonHbox" type="HBoxContainer" parent="UI/InfoPopup/VBoxContainer" unique_id=800103264]
+layout_mode = 2
+
+[node name="CancelButton" type="Button" parent="UI/InfoPopup/VBoxContainer/ButtonHbox" unique_id=1736281236]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "<=="
+
+[node name="EnterButton" type="Button" parent="UI/InfoPopup/VBoxContainer/ButtonHbox" unique_id=689930344]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_x1xd1")
+text = "Play Level"
+
+[connection signal="pressed" from="UI/InfoPopup/VBoxContainer/ButtonHbox/CancelButton" to="MapPlayer" method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="UI/InfoPopup/VBoxContainer/ButtonHbox/EnterButton" to="MapPlayer" method="_on_enter_button_pressed"]
