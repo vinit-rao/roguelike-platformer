@@ -15,11 +15,16 @@ extends Node
 var map_layers: Array = []
 
 func _ready() -> void:
-	generate_map_data()
-	generate_connections()
+	if GameManager.map_blueprint.is_empty():
+		generate_map_data()
+		generate_connections()
+		GameManager.map_blueprint = map_layers
+	else:
+		map_layers = GameManager.map_blueprint
+
 	spawn_map_visually()
 	draw_lines()
-
+	
 func generate_map_data() -> void:
 	map_layers.clear()
 	
@@ -53,12 +58,14 @@ func determine_node_type(row: int) -> int:
 	if row == map_height - 1:
 		return 3 # boss
 		
-	# For rows in between its rn 20% for shop and 80% for level
+	# for rows in between its rn 20% for shop and 80% for level
 	if randf() > 0.8:
 		return 2
 	return 1
 	
 func spawn_map_visually() -> void:
+	var player = get_parent().get_node("MapPlayer")
+	
 	for row_index in range(map_layers.size()):
 		var current_row = map_layers[row_index]
 		
@@ -71,25 +78,28 @@ func spawn_map_visually() -> void:
 			
 			# create new copy of map node
 			var new_node = map_node_scene.instantiate()
-			add_child(new_node)
 			
-			# assign color
+			# assign properties
 			new_node.node_type = node_data["type"]
+			new_node.grid_row = node_data["row"]
+			new_node.grid_col = node_data["col"]
+			
+			# add to scene
+			add_child(new_node)
 			
 			# set pos
 			var x_pos = start_x + (col_index * horizontal_spacing)
 			var y_pos = -row_index * vertical_spacing
 			new_node.global_position = Vector2(x_pos, y_pos)
+			
 			node_data["physical_node"] = new_node
-
-	# start at start node
-	var start_node = map_layers[0][0]["physical_node"]
-	var player = get_parent().get_node("MapPlayer")
+			new_node.node_clicked.connect(player.on_node_clicked)
+			
+	var target_node = map_layers[GameManager.current_map_row][GameManager.current_map_col]["physical_node"]
 	
-	if player and GameManager.current_map_node == null:
-		player.current_node = start_node
-		player.global_position = start_node.global_position
-		
+	if player:
+		player.current_node = target_node
+		player.global_position = target_node.global_position
 
 func generate_connections() -> void:
 	for row in range(map_height - 1):
@@ -117,16 +127,19 @@ func generate_connections() -> void:
 func draw_lines() -> void:
 	for row in map_layers:
 		for node_data in row:
-			var start_pos = node_data["physical_node"].global_position
+			var start_node = node_data["physical_node"]
+			var start_pos = start_node.global_position
 			
-			# draw line
 			for target_data in node_data["next_connections"]:
-				var end_pos = target_data["physical_node"].global_position
+				var target_node = target_data["physical_node"]
+				var end_pos = target_node.global_position
+
+				start_node.next_nodes.append(target_node)
 				
 				var line = Line2D.new()
 				line.add_point(start_pos)
 				line.add_point(end_pos)
-				line.width = 4.0 # line thickness
-				line.default_color = Color.DIM_GRAY # line color
-				line.z_index = -1 # makes lines go behind dots
+				line.width = 4.0               
+				line.default_color = Color.DIM_GRAY  
+				line.z_index = -1              
 				add_child(line)

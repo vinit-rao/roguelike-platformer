@@ -3,9 +3,12 @@ extends Area2D
 enum NodeType {START, LEVEL, SHOP, BOSS}
 @export var node_type: NodeType = NodeType.LEVEL
 
-# These are the variables that will show up in the Inspector!
-@export var next_node: Area2D
-@export var prev_node: Area2D
+var next_nodes: Array[Area2D] = []
+
+signal node_clicked(node: Area2D)
+
+var grid_row: int = 0
+var grid_col: int = 0
 
 func _ready() -> void:
 	match node_type:
@@ -13,3 +16,7 @@ func _ready() -> void:
 		NodeType.LEVEL: $ColorRect.color = Color.BLUE
 		NodeType.SHOP: $ColorRect.color = Color.GOLD
 		NodeType.BOSS: $ColorRect.color = Color.RED
+
+func _input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		node_clicked.emit(self)

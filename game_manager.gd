@@ -1,6 +1,8 @@
 extends Node
 
-var current_map_node: Area2D = null
+var map_blueprint: Array = []
+var current_map_row: int = 0
+var current_map_col: int = 0
 
 var modifiers = [
 	{

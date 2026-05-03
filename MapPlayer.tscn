@@ -5,6 +5,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_savfe"]
 
 [node name="MapPlayer" type="CharacterBody2D" unique_id=24265437]
+z_index = 1
 script = ExtResource("1_bpvl8")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=860470543]
