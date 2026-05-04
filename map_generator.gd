@@ -114,6 +114,16 @@ func spawn_map_visually() -> void:
 		player.current_node = target_node
 		player.global_position = target_node.global_position
 
+	for row in map_layers:
+		for node_data in row:
+			var node = node_data["physical_node"]
+			
+			if node.grid_row < GameManager.current_map_row:
+				node.set_dimmed()
+				
+			elif node.grid_row == GameManager.current_map_row and node != target_node:
+				node.set_dimmed()
+
 func generate_connections() -> void:
 	for row in range(map_height - 1):
 		var current_layer = map_layers[row]
@@ -153,6 +163,12 @@ func draw_lines() -> void:
 				line.add_point(start_pos)
 				line.add_point(end_pos)
 				line.width = 4.0               
-				line.default_color = Color.DIM_GRAY  
 				line.z_index = -1              
+				
+				if start_node.modulate != Color(1, 1, 1, 1):
+					line.default_color = Color(0.1, 0.1, 0.1, 1.0)
+				else:
+					line.default_color = Color.DIM_GRAY
+					
 				add_child(line)
+				
